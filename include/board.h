@@ -72,8 +72,10 @@ class Move {
 public:
 	int x;
 	int y;
+	Color c;
 	Move();
 	Move(int x, int y);
+	Move(int x, int y, Color c);
 };
 
 /**
@@ -92,10 +94,10 @@ protected:
 	void clear_state();
 	bool check_end_about(Move lst);
 	void upd_status();
-	bool make_move();
+	bool make_move(Move m);
 
 public:
-	static const size = 15;
+	static const int size;
 
 	Board();
 	void clear();

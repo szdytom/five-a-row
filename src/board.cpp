@@ -8,21 +8,23 @@
 #include <algorithm>
 #include <cstdio>
 
+const int ltzero::Board::size = 15;
+
 void ltzero::Board::clear_state() {
 	this->status = 0;
 	this->state.clear();
-	this->state.resize(this->size);
-	for (int i = 0; i < this->size; ++i) 
-		state[i].resize(this->size);
+	this->state.resize(ltzero::Board::size);
+	for (int i = 0; i < ltzero::Board::size; ++i) 
+		state[i].resize(ltzero::Board::size);
 
-	for (int i = 0; i < this->size; ++i) {
-		for (int j = 0; j < this->size; ++j) {
-			state[i][j] = ltzero::Board::Empty;
+	for (int i = 0; i < ltzero::Board::size; ++i) {
+		for (int j = 0; j < ltzero::Board::size; ++j) {
+			state[i][j] = ltzero::Color::Empty;
 		}
 	}
 }
 
-bool ltzero::Board::check_end_about(ltzero::Move last) {
+bool ltzero::Board::check_end_about(ltzero::Move lst) {
 	int cnt = 0;
 
 	/**
@@ -33,11 +35,11 @@ bool ltzero::Board::check_end_about(ltzero::Move last) {
 	 *  x
 	 *  x
 	*/
-	for (int i = max(last.x - 4, 0); i < std::min(last.x + 5, this->size); ++i) {
-		if (this->state[i][last.y] == last.c) {
+	for (int i = std::max(lst.x - 4, 0); i < std::min(lst.x + 5, ltzero::Board::size); ++i) {
+		if (this->state[i][lst.y] == lst.c) {
 			++cnt;
-			if (cnt == 5 && (i + 1 >= this->size 
-				 || state[i + 1][last.y] != last.c)) {
+			if (cnt == 5 && (i + 1 >= ltzero::Board::size 
+				 || state[i + 1][lst.y] != lst.c)) {
 				return true;
 			}
 		} else {
@@ -51,11 +53,11 @@ bool ltzero::Board::check_end_about(ltzero::Move last) {
 	 * xxxxx
 	*/
 	cnt = 0;
-	for (int i = std::max(last.y - 4, 0); i < std::min(last.y + 5, this->size); ++i) {
-		if (this->state[last.x][i] == last.c) {
+	for (int i = std::max(lst.y - 4, 0); i < std::min(lst.y + 5, ltzero::Board::size); ++i) {
+		if (this->state[lst.x][i] == lst.c) {
 			++cnt;
-			if (cnt == 5 && (i + 1 >= this->size 
-				 || this->state[last.x][i + 1] != last.c)) {
+			if (cnt == 5 && (i + 1 >= ltzero::Board::size 
+				 || this->state[lst.x][i + 1] != lst.c)) {
 				return true;
 			}
 		} else {
@@ -74,14 +76,14 @@ bool ltzero::Board::check_end_about(ltzero::Move last) {
 	*/
 	cnt = 0;
 	for (int i = -4; i <= 4; ++i) {
-		int xx = last.x + i;
-		int yy = last.y + i;
-		if (xx < 0 || xx >= this->size || yy < 0 || yy >= this->size) continue;
+		int xx = lst.x + i;
+		int yy = lst.y + i;
+		if (xx < 0 || xx >= ltzero::Board::size || yy < 0 || yy >= ltzero::Board::size) continue;
 
-		if (this->state[xx][yy] == last.c) {
+		if (this->state[xx][yy] == lst.c) {
 			++cnt;
-			if (cnt == 5 && (xx + 1 >= this->size || yy + 1 >= this->size
-				 || this->state[xx + 1][yy + 1] != last.c)) {
+			if (cnt == 5 && (xx + 1 >= ltzero::Board::size || yy + 1 >= ltzero::Board::size
+				 || this->state[xx + 1][yy + 1] != lst.c)) {
 				return true;
 			}
 		}
@@ -97,14 +99,14 @@ bool ltzero::Board::check_end_about(ltzero::Move last) {
 	*/
 	cnt = 0;
 	for (int i = -4; i <= 4; ++i) {
-		int xx = last.x + i;
-		int yy = last.y - i;
-		if (xx < 0 || xx >= this->size || yy < 0 || yy >= this->size) continue;
+		int xx = lst.x + i;
+		int yy = lst.y - i;
+		if (xx < 0 || xx >= ltzero::Board::size || yy < 0 || yy >= ltzero::Board::size) continue;
 
-		if (this->state[xx][yy] == last.c) {
+		if (this->state[xx][yy] == lst.c) {
 			++cnt;
-			if (cnt == 5 && (xx + 1 >= this->size 
-				 || yy - 1 < 0 || this->state[xx + 1][yy - 1] != last.c)) {
+			if (cnt == 5 && (xx + 1 >= ltzero::Board::size 
+				 || yy - 1 < 0 || this->state[xx + 1][yy - 1] != lst.c)) {
 				return true;
 			}
 		}
@@ -115,15 +117,15 @@ bool ltzero::Board::check_end_about(ltzero::Move last) {
 
 
 void ltzero::Board::upd_status() {
-	ltzero::Move last = this->moves[this->moves.size() - 1];
+	ltzero::Move lst = this->moves[this->moves.size() - 1];
 
-	if (this->check_end_about(last)) {
-		this->status = (last.c == ltzero::Color::Black ? 1 : -1);
+	if (this->check_end_about(lst)) {
+		this->status = (lst.c == ltzero::Color::Black ? 1 : -1);
 	}
 }
 
 bool ltzero::Board::make_move(ltzero::Move m) {
-	if (this->isend()) {
+	if (this->is_end()) {
 		return false;
 	}
 
@@ -144,23 +146,23 @@ ltzero::Board::Board() {
 }
 
 bool ltzero::Board::move(int x, int y) {
-	return this->make_move(ltzero::Move(x, y, this->next_player()));
+	return this->make_move(ltzero::Move(x, y, this->get_next_player()));
 }
 
 bool ltzero::Board::undo() {
-	if (this->isend()) return false;
+	if (this->is_end()) return false;
 	if (this->moves.size() == 0) return false;
 
-	ltsero::Move last = this->moves[this->moves.size() - 1];
+	ltzero::Move lst = this->moves[this->moves.size() - 1];
 	this->moves.pop_back();
 
-	this->state[last.x][last.y] = ltzero::Color::Empty;
+	this->state[lst.x][lst.y] = ltzero::Color::Empty;
 	this->now_ts += 1;
 
 	return true;
 }
 
-bool ltzero::Board::isend() {
+bool ltzero::Board::is_end() {
 	return this->status != 0;
 }
 
@@ -182,19 +184,19 @@ void ltzero::Board::clear() {
 	this->ok_move_ts = -1;
 }
 
-ltzero::Color ltzero::Board::next_player() {
+ltzero::Color ltzero::Board::get_next_player() {
 	if (this->moves.size() == 0) // Black moves the first
 		return ltzero::Color::Black;
 
 	if (this->moves[this->moves.size() - 1].c == ltzero::Color::White)
-		return ltzero::Color::Black
+		return ltzero::Color::Black;
 
 	return ltzero::Color::White;
 }
 
 // Get available move list
 void ltzero::Board::get_moves(std::vector<ltzero::Move> &m) {
-	if (this->isend()) {
+	if (this->is_end()) {
 		m.clear();
 		return;
 	}
@@ -204,13 +206,13 @@ void ltzero::Board::get_moves(std::vector<ltzero::Move> &m) {
 		return;
 	}
 
-	ltzero::Color c = this->next_player();
+	ltzero::Color c = this->get_next_player();
 	this->ok_move.clear();
 	
-	for (int i = 0; i < this->size; ++i) {
-		for (int j = 0; j < this->size; ++j) {
-			if (state[i][j] == Empty) 
-				this->ok_move.push_back(ltsero::Move(i, j, c));
+	for (int i = 0; i < ltzero::Board::size; ++i) {
+		for (int j = 0; j < ltzero::Board::size; ++j) {
+			if (state[i][j] == ltzero::Color::Empty) 
+				this->ok_move.push_back(ltzero::Move(i, j, c));
 		}
 	}
 
@@ -220,8 +222,8 @@ void ltzero::Board::get_moves(std::vector<ltzero::Move> &m) {
 
 
 void ltzero::Board::print_board() {
-	for (int i = 0; i < this->size; ++i) {
-		for (int j = 0; j < this->size; ++j) {
+	for (int i = 0; i < ltzero::Board::size; ++i) {
+		for (int j = 0; j < ltzero::Board::size; ++j) {
 			switch (this->state[i][j]) {
 				case ltzero::Color::Empty:
 					std::printf(".");
@@ -241,11 +243,29 @@ void ltzero::Board::print_board() {
 }
 
 // Get the board
-std::vector<std::vector<ltzero::Board::Color> > Board::get_board() {
+std::vector<std::vector<ltzero::Color> > ltzero::Board::get_board() {
 	return this->state;
 }
 
 // Get move history
-std::vector<ltzere::Move> Board::get_history() {
+std::vector<ltzero::Move> ltzero::Board::get_history() {
 	return this->moves;
+}
+
+ltzero::Move::Move() {
+	this->x = -1;
+	this->y = -21;
+	this->c = ltzero::Color::Empty;
+}
+
+ltzero::Move::Move(int x, int y) {
+	this->x = x;
+	this->y = y;
+	this->c = ltzero::Color::Empty;
+}
+
+ltzero::Move::Move(int x, int y, ltzero::Color c) {
+	this->x = x;
+	this->y = y;
+	this->c = c;
 }
