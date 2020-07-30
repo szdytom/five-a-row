@@ -95,6 +95,8 @@ protected:
 	bool make_move();
 
 public:
+	static const size = 15;
+
 	Board();
 	void clear();
 
