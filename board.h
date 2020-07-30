@@ -1,9 +1,61 @@
+/**
+ * board.h
+ * 
+ * This file defines the board & rules of 
+ * the Gomoku game.
+ * 
+ * class Move is about each single move.
+ * class Board is about the holo board of
+ * the Gomoku game.
+ * 
+ * namespace: ltzero
+ * 
+ * class:
+ *  - Move
+ * 	  - Public Var:
+ *      - x
+ *      - y
+ *    - Public Method:
+ *      - Move(void)
+ *      - Move(int, int)
+ *  
+ *  - Board
+ *    - Public Method:
+ *      - board(void)
+ *      - void clear(void)
+ *      - bool move(int, int)
+ *      - bool is_end(void)
+ *      - int check(void)
+ *      - Color get_next_player(void)
+ *      - void print_board(void)
+ *      - std::vector<std::vector<Color> > get_board(void)
+ *      - std::vector<Move> get_history(void)
+ * 
+ *   - Color (enum)
+ *     - type: short
+ *     - value:
+ *       - Black = 1
+ *       - White
+ *       - Empty
+ *  
+ */
+
 #ifndef BOARD_H
 #define BOARD_H
 
 #include <vector>
 
 namespace ltzero {
+
+/**
+ * Color for a move
+ * It has value of a short
+ */
+enum class Color : short {
+	Black = 1,
+	White,
+	Empty
+};
 
 /**
  * Define a move
@@ -56,7 +108,7 @@ public:
 	void get_moves(std::vector<Move> &m);
 	void print_board();
 	std::vector<std::vector<Color> > get_board();
-	std::vector<Move> get_moves();
+	std::vector<Move> get_history();
 };
 
 } // namespace board
