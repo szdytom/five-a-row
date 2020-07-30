@@ -4,6 +4,7 @@
  * Define of functions and class in board.h
  */
 
+#include "../include/board.h"
 #include <algorithm>
 #include <cstdio>
 
