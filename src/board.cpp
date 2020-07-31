@@ -1,7 +1,7 @@
 /**
  * board.cpp
  *
- * Define of functions and class in board.h
+ * Define of functions and classes in board.h
  */
 
 #include "../include/board.h"
@@ -67,7 +67,7 @@ bool ltzero::Board::check_end_about(ltzero::Move lst) {
 	}
 
 	/**
-	 * like this kind
+	 * like this kind:
 	 * x
 	 *  x
 	 *   x
@@ -254,7 +254,7 @@ std::vector<ltzero::Move> ltzero::Board::get_history() {
 
 ltzero::Move::Move() {
 	this->x = -1;
-	this->y = -21;
+	this->y = -1;
 	this->c = ltzero::Color::Empty;
 }
 
