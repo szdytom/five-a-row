@@ -97,22 +97,22 @@ protected:
 	bool make_move(Move m);
 
 public:
-	static const int size;
+	static const int size; // Defined as 15 at src/board.cpp
 
 	Board();
-	void clear();
+	void clear(); // clear the board
 
-	bool move(int x, int y);
-	bool undo();
+	bool move(int x, int y); // make a move
+	bool undo(); // undo last move
 
-	bool is_end();
-	int check();
+	bool is_end(); // check if the game ends
+	int check(); // check game status
 
-	Color get_next_player();
-	void get_moves(std::vector<Move> &m);
-	void print_board();
-	std::vector<std::vector<Color> > get_board();
-	std::vector<Move> get_history();
+	Color get_next_player(); // get the player who plays the next
+	void get_moves(std::vector<Move> &m);  // Get available move list
+	void print_board(); // output the board as graphic
+	std::vector<std::vector<Color> > get_board(); // get board state
+	std::vector<Move> get_history(); // get move history
 };
 
 } // namespace board
