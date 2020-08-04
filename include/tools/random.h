@@ -13,9 +13,11 @@
 #ifndef TOOLS_RANDOM_H
 #define TOOLS_RANDOM_H
 
+#include <exception>
 #include <vector>
 
-namespace ltzero::tools {
+namespace ltzero {
+namespace tools {
 
 /**
  * @breif get a random number in [x, y)
@@ -53,9 +55,10 @@ int randint(int x);
  * return v[random_index];
  * 
  */
-template<typename __T> 
+template <typename __T>
 __T rand_choice(std::vector<__T> v);
 
-} // namespace ltzero::tools
+} // namespace tools
+} // namespace ltzero
 
-#endif// TOOLS_RANDOM_H
+#endif // TOOLS_RANDOM_H
